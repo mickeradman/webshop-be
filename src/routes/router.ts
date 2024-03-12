@@ -4,6 +4,6 @@ import getProducts from '../controllers/getProducts.controller';
 
 const router: Router = Router();
 
-router.get('/products', getProducts);
+router.get('/getall', getProducts);
 
 export default router;

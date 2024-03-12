@@ -1,24 +1,28 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-export const productSchema = new mongoose.Schema({
-  productName: String,
-  description: String,
-  price: Number,
-  stockStatus: String,
-  imgPath: String,
-  category: String,
-});
+export interface IProduct extends Document {
+  productName: string;
+  description: string;
+  price: number;
+  stockStatus: 'I lager' | 'Inte i lager';
+  imgPath: string;
+  category: string;
+}
 
-productSchema.pre('validate', function (next) {
-  if (this.isNew || this.isModified()) {
-    this.schema.path('productName').required(true);
-    this.schema.path('description').required(true);
-    this.schema.path('price').required(true);
-    this.schema.path('stockStatus').required(true);
-    this.schema.path('imgPath').required(true);
-    this.schema.path('category').required(true);
-  }
-  next();
-});
+const productSchema: Schema = new Schema(
+  {
+    productName: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true, min: 0 },
+    stockStatus: {
+      type: String,
+      enum: ['I lager', 'Inte i lager'],
+      required: true,
+    },
+    imgPath: { type: String, required: true },
+    category: { type: String, required: true },
+  },
+  { collection: 'wares' }
+);
 
-export default mongoose.model('Product', productSchema);
+export default mongoose.model<IProduct>('Product', productSchema);
