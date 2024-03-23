@@ -22,7 +22,7 @@ database.on('open', () => {
 });
 
 database.on('error', (err) => {
-  console.error('Ett fel inträffade vid anslutning till databasen: ', err);
+  console.error('Ett fel inträffade vid anslutning till databasen:', err);
 });
 
 app.use((_req: Request, res: Response) => {
